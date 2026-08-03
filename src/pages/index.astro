@@ -14,6 +14,11 @@ const gebruikt = [...new Set(alles.map((a) => a.data.rubriek))];
 ---
 
 <Base>
+  <p class="opdracht">
+    Deze site is gemaakt voor <strong>Hilke uit Lent</strong>, die alles weet van
+    stoomtreinen. Iedereen die er net zo gek op is, mag meelezen.
+  </p>
+
   <nav class="rubrieken">
     {gebruikt.map((r) => (
       <a class="rubriekknop" data-r={r} href={`/rubriek/${r}/`}>

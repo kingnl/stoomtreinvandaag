@@ -89,6 +89,20 @@ img { max-width: 100%; display: block; }
 
 /* ---------- Rubrieken ---------- */
 
+.opdracht {
+  max-width: 520px;
+  margin: 0 auto 32px;
+  text-align: center;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--gedempt);
+}
+
+.opdracht strong {
+  color: var(--tekst);
+  font-weight: normal;
+}
+
 .rubrieken {
   display: flex;
   flex-wrap: wrap;
