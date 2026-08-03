@@ -292,12 +292,40 @@ img { max-width: 100%; display: block; }
   position: sticky;
   bottom: 0;
   display: flex;
-  gap: 12px;
-  justify-content: flex-end;
-  padding: 16px 0 calc(20px + env(safe-area-inset-bottom, 0px));
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0 calc(16px + env(safe-area-inset-bottom, 0px));
   margin-top: 24px;
   background: linear-gradient(to top, var(--achtergrond) 78%, transparent);
   z-index: 10;
+}
+
+.balk .rechts {
+  display: flex;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.knop.klein {
+  min-height: 56px;
+  min-width: 56px;
+  padding: 0 20px;
+  font-size: 1.05rem;
+  line-height: 56px;
+}
+
+.deelmerk {
+  display: inline-block;
+  font-family: system-ui, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin: 0 0 10px 8px;
+  border: 1px solid var(--rand);
+  color: var(--gedempt);
 }
 
 .knop {
@@ -374,22 +402,6 @@ img { max-width: 100%; display: block; }
 
 /* ---------- Grote voorleesknop ---------- */
 
-.grotelees {
-  display: block;
-  width: 100%;
-  min-height: 88px;
-  margin: 4px 0 30px;
-  font-size: 1.4rem;
-  font-family: system-ui, sans-serif;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius);
-  cursor: pointer;
-  touch-action: manipulation;
-}
-
-.grotelees:active { transform: scale(0.99); }
 
 .speler { width: 100%; margin-bottom: 24px; }
 
@@ -397,24 +409,12 @@ img { max-width: 100%; display: block; }
   display: block;
   width: 100%;
   text-align: center;
-  line-height: 72px;
-  margin: 8px 0 4px;
+  line-height: 68px;
+  min-height: 68px;
+  margin: 10px 0 0;
 }
 
 /* ---------- Onderbalk ---------- */
 
-.onderbalk {
-  position: sticky;
-  bottom: 0;
-  display: flex;
-  gap: 12px;
-  justify-content: space-between;
-  padding: 16px 0 calc(20px + env(safe-area-inset-bottom, 0px));
-  margin-top: 28px;
-  background: linear-gradient(to top, var(--achtergrond) 78%, transparent);
-  z-index: 10;
-}
-
-.onderbalk .knop { line-height: 72px; padding: 0 26px; }
 
 .verborgen { display: none; }

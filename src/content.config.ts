@@ -18,6 +18,8 @@ const nieuws = defineCollection({
       url: z.string().optional(),
       datum: z.string().optional(),
     }).optional(),
+    serie: z.string().optional(),
+    deel: z.number().optional(),
     verrijkt: z.array(z.string()).optional(),
   }),
 });

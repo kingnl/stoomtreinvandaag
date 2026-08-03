@@ -12,6 +12,14 @@ const { item } = Astro.props;
 const { Content } = await render(item);
 const d = item.data;
 
+const alles = await getCollection('nieuws');
+const serie = d.serie
+  ? alles.filter((a) => a.data.serie === d.serie).sort((a, b) => (a.data.deel ?? 0) - (b.data.deel ?? 0))
+  : [];
+const hier = serie.findIndex((a) => a.id === item.id);
+const volgende = hier >= 0 ? serie[hier + 1] : null;
+const vorige = hier > 0 ? serie[hier - 1] : null;
+
 const embed = d.video
   ? `https://www.youtube-nocookie.com/embed/${d.video}?autoplay=1&mute=1&loop=1&playlist=${d.video}&controls=0&modestbranding=1&rel=0&playsinline=1&disablekb=1`
   : null;
@@ -21,13 +29,8 @@ const embed = d.video
 
   {embed ? (
     <div class="media">
-      <iframe
-        src={embed}
-        title={d.titel}
-        allow="autoplay; encrypted-media; picture-in-picture"
-        referrerpolicy="strict-origin-when-cross-origin"
-        loading="lazy"
-      ></iframe>
+      <iframe src={embed} title={d.titel} allow="autoplay; encrypted-media; picture-in-picture"
+        referrerpolicy="strict-origin-when-cross-origin" loading="lazy"></iframe>
       <div class="mediaschild"></div>
     </div>
   ) : (
@@ -36,15 +39,26 @@ const embed = d.video
 
   <article class="artikel">
     <span class="merk" data-r={d.rubriek}>{rubrieken[d.rubriek].naam}</span>
-    <h1>{d.titel}</h1>
+    {d.serie && <span class="deelmerk">Deel {d.deel} van {serie.length}</span>}
 
-    <button class="grotelees" id="lees">Lees voor</button>
+    <h1>{d.titel}</h1>
 
     {d.audio && <audio class="speler" controls preload="none" src={d.audio}></audio>}
 
     <div id="voorlezen">
       <Content />
     </div>
+
+    {volgende && (
+      <a class="knop breed" href={`/nieuws/${volgende.id}/`}>
+        Verder met deel {volgende.data.deel} &rarr;
+      </a>
+    )}
+    {vorige && (
+      <a class="knop stil breed" href={`/nieuws/${vorige.id}/`}>
+        &larr; Terug naar deel {vorige.data.deel}
+      </a>
+    )}
 
     {d.video && (
       <a class="knop stil breed" href={`https://www.youtube.com/watch?v=${d.video}`} target="_blank" rel="noopener">
@@ -63,15 +77,18 @@ const embed = d.video
           <br />
         </>
       )}
-      {d.video ? <>{d.videoCredit}<br /></> : d.afbeeldingCredit}
-      {!d.video && <br />}
+      {d.video ? d.videoCredit : d.afbeeldingCredit}
+      <br />
       Geplaatst op {datumNL(d.datum)}
     </p>
   </article>
 
-  <nav class="onderbalk">
-    <a class="knop stil" href="/">&larr; Terug</a>
-    <button class="knop verborgen" id="stop">Stop</button>
+  <nav class="balk">
+    <a class="knop stil klein" href="/">&larr; Terug</a>
+    <div class="rechts">
+      <button class="knop stil klein verborgen" id="stop">Stop</button>
+      <button class="knop klein" id="lees">Lees voor</button>
+    </div>
   </nav>
 
 </Base>
@@ -82,44 +99,70 @@ const embed = d.video
   const blok = document.getElementById('voorlezen');
   const kop = document.querySelector('.artikel h1');
 
+  let rij = [];
+  let index = 0;
+  let actief = false;
+
   function stem() {
     const alle = window.speechSynthesis.getVoices();
-    return alle.find((s) => s.lang === 'nl-NL') ||
+    return alle.find((s) => s.lang === 'nl-NL' && /premium|enhanced|verbeterd/i.test(s.name)) ||
+           alle.find((s) => s.lang === 'nl-NL') ||
            alle.find((s) => s.lang && s.lang.startsWith('nl')) || null;
   }
 
+  // Tekst opdelen in losse zinnen, met een langere pauze na elke alinea
+  function bouwRij() {
+    const stukken = [];
+    if (kop) stukken.push({ tekst: kop.innerText, pauze: 700 });
+
+    blok.querySelectorAll('p, li').forEach((el) => {
+      const alinea = el.innerText.trim();
+      if (!alinea) return;
+      const zinnen = alinea.match(/[^.!?]+[.!?]*/g) || [alinea];
+      zinnen.forEach((z, i) => {
+        const t = z.trim();
+        if (t) stukken.push({ tekst: t, pauze: i === zinnen.length - 1 ? 650 : 280 });
+      });
+    });
+    return stukken;
+  }
+
   function klaar() {
+    actief = false;
     leesKnop.textContent = 'Lees voor';
     stopKnop.classList.add('verborgen');
+  }
+
+  function spreekVolgende() {
+    if (!actief || index >= rij.length) { klaar(); return; }
+    const stuk = rij[index];
+    const u = new SpeechSynthesisUtterance(stuk.tekst);
+    const v = stem();
+    u.lang = 'nl-NL';
+    if (v) u.voice = v;
+    u.rate = 0.85;
+    u.pitch = 1.0;
+    u.onend = () => {
+      index++;
+      setTimeout(spreekVolgende, stuk.pauze);
+    };
+    u.onerror = () => { index++; setTimeout(spreekVolgende, 120); };
+    window.speechSynthesis.speak(u);
   }
 
   function voorlezen() {
     if (!('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
-
-    const stukken = [];
-    if (kop) stukken.push(kop.innerText);
-    blok.querySelectorAll('p, li').forEach((el) => {
-      const t = el.innerText.trim();
-      if (t) stukken.push(t);
-    });
-
-    const v = stem();
-    stukken.forEach((stuk, i) => {
-      const u = new SpeechSynthesisUtterance(stuk);
-      u.lang = 'nl-NL';
-      if (v) u.voice = v;
-      u.rate = 0.95;
-      if (i === stukken.length - 1) u.onend = klaar;
-      window.speechSynthesis.speak(u);
-    });
-
+    rij = bouwRij();
+    index = 0;
+    actief = true;
     leesKnop.textContent = 'Opnieuw';
     stopKnop.classList.remove('verborgen');
+    setTimeout(spreekVolgende, 60);
   }
 
   leesKnop.addEventListener('click', voorlezen);
-  stopKnop.addEventListener('click', () => { window.speechSynthesis.cancel(); klaar(); });
+  stopKnop.addEventListener('click', () => { actief = false; window.speechSynthesis.cancel(); klaar(); });
 
   if ('speechSynthesis' in window) {
     window.speechSynthesis.getVoices();
