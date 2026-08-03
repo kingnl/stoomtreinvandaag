@@ -1,0 +1,17 @@
+{
+  "name": "Stoomtrein Vandaag",
+  "short_name": "Stoomtrein",
+  "description": "Elke dag iets over stoomtreinen, in het Nederlands.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#14110f",
+  "theme_color": "#14110f",
+  "lang": "nl",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

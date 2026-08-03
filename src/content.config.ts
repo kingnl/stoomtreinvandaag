@@ -11,6 +11,8 @@ const nieuws = defineCollection({
     afbeelding: z.string(),
     afbeeldingCredit: z.string(),
     audio: z.string().optional(),
+    video: z.string().optional(),          // YouTube-ID, bijv. "FJiGIB3INJw"
+    videoCredit: z.string().optional(),
     bron: z.object({
       naam: z.string(),
       url: z.string().optional(),

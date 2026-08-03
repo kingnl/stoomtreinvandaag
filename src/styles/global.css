@@ -42,11 +42,19 @@ img { max-width: 100%; display: block; }
 /* ---------- Kop ---------- */
 
 .sitekop {
-  padding: 28px 20px 20px;
+  padding: calc(14px + env(safe-area-inset-top, 0px)) 20px 18px;
   text-align: center;
   border-bottom: 1px solid var(--rand);
-  margin-bottom: 28px;
+  margin-bottom: 26px;
 }
+
+.sitekop.klein {
+  padding: calc(8px + env(safe-area-inset-top, 0px)) 20px 10px;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.sitekop.klein .logo { width: 116px; }
 
 .sitekop a { display: inline-block; }
 
@@ -328,3 +336,85 @@ img { max-width: 100%; display: block; }
   .artikel h1 { font-size: 1.7rem; }
   .knop { padding: 0 20px; font-size: 1.05rem; }
 }
+
+
+/* ---------- Media ---------- */
+
+.media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #000;
+  margin-bottom: 18px;
+}
+
+.media iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* vangt tikken op, zodat het geluid nooit per ongeluk aangaat */
+.mediaschild {
+  position: absolute;
+  inset: 0;
+}
+
+.media-foto {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: var(--radius);
+  margin-bottom: 18px;
+}
+
+/* ---------- Grote voorleesknop ---------- */
+
+.grotelees {
+  display: block;
+  width: 100%;
+  min-height: 88px;
+  margin: 4px 0 30px;
+  font-size: 1.4rem;
+  font-family: system-ui, sans-serif;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.grotelees:active { transform: scale(0.99); }
+
+.speler { width: 100%; margin-bottom: 24px; }
+
+.knop.breed {
+  display: block;
+  width: 100%;
+  text-align: center;
+  line-height: 72px;
+  margin: 8px 0 4px;
+}
+
+/* ---------- Onderbalk ---------- */
+
+.onderbalk {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 16px 0 calc(20px + env(safe-area-inset-bottom, 0px));
+  margin-top: 28px;
+  background: linear-gradient(to top, var(--achtergrond) 78%, transparent);
+  z-index: 10;
+}
+
+.onderbalk .knop { line-height: 72px; padding: 0 26px; }
+
+.verborgen { display: none; }

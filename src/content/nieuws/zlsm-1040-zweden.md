@@ -4,7 +4,9 @@ datum: 2026-07-28
 rubriek: zlsm
 samenvatting: "Zweden hield decennialang stoomlocomotieven achter de hand voor noodgevallen. Vier ervan staan nu in Simpelveld."
 afbeelding: "/images/zlsm-1040.jpg"
-afbeeldingCredit: "Foto: Wikimedia Commons, CC BY-SA"
+afbeeldingCredit: "Foto: bron nog aanvullen"
+video: "FJiGIB3INJw"
+videoCredit: "Video: kanaal nog aanvullen, via YouTube"
 bron:
   naam: "De Miljoenenlijn"
   url: "https://miljoenenlijn.nl/artikel/stoomloc-e2-1040/"

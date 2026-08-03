@@ -1,24 +1,40 @@
 ---
 import '../styles/global.css';
-const { titel = 'Stoomtrein Vandaag' } = Astro.props;
+const { titel = 'Stoomtrein Vandaag', compact = false } = Astro.props;
 ---
 <!DOCTYPE html>
 <html lang="nl">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="description" content="Elke dag iets nieuws over stoomtreinen, in het Nederlands." />
+    <meta name="description" content="Elke dag iets over stoomtreinen, in het Nederlands." />
     <title>{titel}</title>
+
     <link rel="icon" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#14110f" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Stoomtrein" />
   </head>
   <body>
-    <header class="sitekop">
+    <header class:list={['sitekop', compact && 'klein']}>
       <a href="/" aria-label="Naar de voorpagina">
         <img class="logo" src="/images/logo.png" alt="Stoomtrein Vandaag" />
       </a>
     </header>
+
     <main class="wrap">
       <slot />
     </main>
+
+    <script is:inline>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+      }
+    </script>
   </body>
 </html>

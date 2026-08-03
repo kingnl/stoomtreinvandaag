@@ -1,39 +1,56 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import Voorlezen from '../../components/Voorlezen.astro';
 import { rubrieken, datumNL } from '../../rubrieken.js';
 
 export async function getStaticPaths() {
   const items = await getCollection('nieuws');
-  return items.map((item) => ({
-    params: { slug: item.id },
-    props: { item },
-  }));
+  return items.map((item) => ({ params: { slug: item.id }, props: { item } }));
 }
 
 const { item } = Astro.props;
 const { Content } = await render(item);
 const d = item.data;
+
+const embed = d.video
+  ? `https://www.youtube-nocookie.com/embed/${d.video}?autoplay=1&mute=1&loop=1&playlist=${d.video}&controls=0&modestbranding=1&rel=0&playsinline=1&disablekb=1`
+  : null;
 ---
 
-<Base titel={`${d.titel} — Stoomtrein Vandaag`}>
-  <a class="terug" href="/">&larr; Terug naar het overzicht</a>
+<Base titel={`${d.titel} — Stoomtrein Vandaag`} compact={true}>
+
+  {embed ? (
+    <div class="media">
+      <iframe
+        src={embed}
+        title={d.titel}
+        allow="autoplay; encrypted-media; picture-in-picture"
+        referrerpolicy="strict-origin-when-cross-origin"
+        loading="lazy"
+      ></iframe>
+      <div class="mediaschild"></div>
+    </div>
+  ) : (
+    <img class="media-foto" src={d.afbeelding} alt="" />
+  )}
 
   <article class="artikel">
-    <img class="artikelfoto" src={d.afbeelding} alt="" />
-    <p class="credit">{d.afbeeldingCredit}</p>
-
     <span class="merk" data-r={d.rubriek}>{rubrieken[d.rubriek].naam}</span>
     <h1>{d.titel}</h1>
 
-    {d.audio && (
-      <audio id="speler" controls preload="none" src={d.audio}></audio>
-    )}
+    <button class="grotelees" id="lees">Lees voor</button>
+
+    {d.audio && <audio class="speler" controls preload="none" src={d.audio}></audio>}
 
     <div id="voorlezen">
       <Content />
     </div>
+
+    {d.video && (
+      <a class="knop stil breed" href={`https://www.youtube.com/watch?v=${d.video}`} target="_blank" rel="noopener">
+        Bekijk op YouTube
+      </a>
+    )}
 
     <p class="bronregel">
       {d.bron && (
@@ -46,11 +63,66 @@ const d = item.data;
           <br />
         </>
       )}
-      {d.afbeeldingCredit}
-      <br />
+      {d.video ? <>{d.videoCredit}<br /></> : d.afbeeldingCredit}
+      {!d.video && <br />}
       Geplaatst op {datumNL(d.datum)}
     </p>
   </article>
 
-  <Voorlezen />
+  <nav class="onderbalk">
+    <a class="knop stil" href="/">&larr; Terug</a>
+    <button class="knop verborgen" id="stop">Stop</button>
+  </nav>
+
 </Base>
+
+<script>
+  const leesKnop = document.getElementById('lees');
+  const stopKnop = document.getElementById('stop');
+  const blok = document.getElementById('voorlezen');
+  const kop = document.querySelector('.artikel h1');
+
+  function stem() {
+    const alle = window.speechSynthesis.getVoices();
+    return alle.find((s) => s.lang === 'nl-NL') ||
+           alle.find((s) => s.lang && s.lang.startsWith('nl')) || null;
+  }
+
+  function klaar() {
+    leesKnop.textContent = 'Lees voor';
+    stopKnop.classList.add('verborgen');
+  }
+
+  function voorlezen() {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+
+    const stukken = [];
+    if (kop) stukken.push(kop.innerText);
+    blok.querySelectorAll('p, li').forEach((el) => {
+      const t = el.innerText.trim();
+      if (t) stukken.push(t);
+    });
+
+    const v = stem();
+    stukken.forEach((stuk, i) => {
+      const u = new SpeechSynthesisUtterance(stuk);
+      u.lang = 'nl-NL';
+      if (v) u.voice = v;
+      u.rate = 0.95;
+      if (i === stukken.length - 1) u.onend = klaar;
+      window.speechSynthesis.speak(u);
+    });
+
+    leesKnop.textContent = 'Opnieuw';
+    stopKnop.classList.remove('verborgen');
+  }
+
+  leesKnop.addEventListener('click', voorlezen);
+  stopKnop.addEventListener('click', () => { window.speechSynthesis.cancel(); klaar(); });
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+  }
+</script>
