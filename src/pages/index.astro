@@ -1,17 +1,54 @@
 ---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { rubrieken, datumNL } from '../rubrieken.js';
 
+const alles = (await getCollection('nieuws')).sort(
+  (a, b) => b.data.datum.valueOf() - a.data.datum.valueOf()
+);
+
+const nieuwste = alles[0];
+const rest = alles.slice(1);
+
+const gebruikt = [...new Set(alles.map((a) => a.data.rubriek))];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Base>
+  <nav class="rubrieken">
+    {gebruikt.map((r) => (
+      <a class="rubriekknop" data-r={r} href={`/rubriek/${r}/`}>
+        <img src={rubrieken[r].icoon} alt="" />
+        <span>{rubrieken[r].naam}</span>
+      </a>
+    ))}
+  </nav>
+
+  {nieuwste && (
+    <a class="uitgelicht" href={`/nieuws/${nieuwste.id}/`}>
+      <img src={nieuwste.data.afbeelding} alt="" />
+      <div class="inhoud">
+        <span class="merk" data-r={nieuwste.data.rubriek}>{rubrieken[nieuwste.data.rubriek].naam}</span>
+        <h2>{nieuwste.data.titel}</h2>
+        <p>{nieuwste.data.samenvatting}</p>
+      </div>
+    </a>
+  )}
+
+  {rest.length > 0 && (
+    <>
+      <h2 class="sectiekop">Alle verhalen</h2>
+      <div class="raster">
+        {rest.map((a) => (
+          <a class="kaart" href={`/nieuws/${a.id}/`}>
+            <img src={a.data.afbeelding} alt="" />
+            <div class="inhoud">
+              <span class="merk" data-r={a.data.rubriek}>{rubrieken[a.data.rubriek].naam}</span>
+              <h3>{a.data.titel}</h3>
+              <span class="datum">{datumNL(a.data.datum)}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </>
+  )}
+</Base>

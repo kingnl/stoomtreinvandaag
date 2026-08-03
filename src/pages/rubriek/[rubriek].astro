@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { rubrieken, datumNL } from '../../rubrieken.js';
+
+export async function getStaticPaths() {
+  const alles = await getCollection('nieuws');
+  const namen = [...new Set(alles.map((a) => a.data.rubriek))];
+  return namen.map((r) => ({
+    params: { rubriek: r },
+    props: {
+      naam: r,
+      items: alles
+        .filter((a) => a.data.rubriek === r)
+        .sort((a, b) => b.data.datum.valueOf() - a.data.datum.valueOf()),
+    },
+  }));
+}
+
+const { naam, items } = Astro.props;
+---
+
+<Base titel={`${rubrieken[naam].naam} — Stoomtrein Vandaag`}>
+  <a class="terug" href="/">&larr; Terug naar het overzicht</a>
+
+  <h2 class="sectiekop">{rubrieken[naam].naam}</h2>
+
+  <div class="raster">
+    {items.map((a) => (
+      <a class="kaart" href={`/nieuws/${a.id}/`}>
+        <img src={a.data.afbeelding} alt="" />
+        <div class="inhoud">
+          <h3>{a.data.titel}</h3>
+          <span class="datum">{datumNL(a.data.datum)}</span>
+        </div>
+      </a>
+    ))}
+  </div>
+</Base>

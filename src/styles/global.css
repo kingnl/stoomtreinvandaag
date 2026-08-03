@@ -1,0 +1,291 @@
+:root {
+  --achtergrond: #14110f;
+  --kaart: #201b18;
+  --tekst: #f6f1e8;
+  --gedempt: #b3a698;
+  --accent: #d1502e;
+  --daglicht: #d1502e;
+  --bigboy: #3f6f8c;
+  --techniek: #7a8b5a;
+  --nederland: #c98a2e;
+  --rand: #362e29;
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--achtergrond);
+  color: var(--tekst);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 20px;
+  line-height: 1.6;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+a { color: inherit; text-decoration: none; }
+
+img { max-width: 100%; display: block; }
+
+.wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 20px calc(40px + env(safe-area-inset-bottom, 0px));
+}
+
+/* ---------- Kop ---------- */
+
+.sitekop {
+  padding: 28px 20px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--rand);
+  margin-bottom: 28px;
+}
+
+.sitekop a { display: inline-block; }
+
+.sitekop h1 {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: 0.5px;
+}
+
+.sitekop p {
+  margin: 6px 0 0;
+  color: var(--gedempt);
+  font-size: 1rem;
+}
+
+/* ---------- Rubrieken ---------- */
+
+.rubrieken {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0 0 36px;
+  justify-content: center;
+}
+
+.rubriekknop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 132px;
+  padding: 14px 8px 16px;
+  background: var(--kaart);
+  border: 2px solid var(--rand);
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  line-height: 1.2;
+  text-align: center;
+  touch-action: manipulation;
+}
+
+.rubriekknop img {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #000;
+}
+
+.rubriekknop[data-r="daglicht"] { border-color: var(--daglicht); }
+.rubriekknop[data-r="bigboy"] { border-color: var(--bigboy); }
+.rubriekknop[data-r="vsm"] { border-color: var(--nederland); }
+.rubriekknop[data-r="zlsm"] { border-color: #b23a48; }
+.rubriekknop[data-r="techniek"] { border-color: var(--techniek); }
+
+.merk[data-r="vsm"] { background: var(--nederland); }
+.merk[data-r="zlsm"] { background: #b23a48; }
+
+/* ---------- Uitgelicht ---------- */
+
+.uitgelicht {
+  display: block;
+  margin-bottom: 44px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--kaart);
+  border: 1px solid var(--rand);
+}
+
+.uitgelicht img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.uitgelicht .inhoud { padding: 22px 24px 26px; }
+
+.uitgelicht h2 {
+  margin: 0 0 10px;
+  font-size: 1.7rem;
+  line-height: 1.25;
+}
+
+.uitgelicht p {
+  margin: 0;
+  color: var(--gedempt);
+}
+
+/* ---------- Raster ---------- */
+
+.sectiekop {
+  font-size: 1.15rem;
+  color: var(--gedempt);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0 0 18px;
+  font-family: system-ui, sans-serif;
+}
+
+.raster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.kaart {
+  background: var(--kaart);
+  border: 1px solid var(--rand);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.kaart img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.kaart .inhoud { padding: 16px 18px 20px; }
+
+.kaart h3 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+  line-height: 1.3;
+}
+
+.kaart .datum {
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--gedempt);
+}
+
+.merk {
+  display: inline-block;
+  font-family: system-ui, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+}
+
+.merk[data-r="daglicht"] { background: var(--daglicht); }
+.merk[data-r="bigboy"] { background: var(--bigboy); }
+.merk[data-r="techniek"] { background: var(--techniek); }
+.merk[data-r="nederland"] { background: var(--nederland); }
+.merk[data-r="algemeen"] { background: #5c5049; }
+
+/* ---------- Artikel ---------- */
+
+.artikelfoto {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+}
+
+.credit {
+  font-family: system-ui, sans-serif;
+  font-size: 0.8rem;
+  color: var(--gedempt);
+  margin: 0 0 28px;
+}
+
+.artikel h1 {
+  font-size: 2.1rem;
+  line-height: 1.2;
+  margin: 0 0 20px;
+}
+
+.artikel p { margin: 0 0 20px; }
+
+.artikel ul { margin: 0 0 20px; padding-left: 22px; }
+.artikel li { margin-bottom: 10px; }
+
+.bronlink {
+  color: var(--tekst);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.bronregel {
+  font-family: system-ui, sans-serif;
+  font-size: 0.9rem;
+  color: var(--gedempt);
+  border-top: 1px solid var(--rand);
+  padding-top: 20px;
+  margin-top: 36px;
+}
+
+/* ---------- Bedieningsknoppen ---------- */
+
+.balk {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding: 16px 0 calc(20px + env(safe-area-inset-bottom, 0px));
+  margin-top: 24px;
+  background: linear-gradient(to top, var(--achtergrond) 78%, transparent);
+  z-index: 10;
+}
+
+.knop {
+  min-height: 72px;
+  min-width: 72px;
+  padding: 0 28px;
+  font-size: 1.15rem;
+  font-family: system-ui, sans-serif;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.knop.stil {
+  background: var(--kaart);
+  border: 2px solid var(--rand);
+  color: var(--tekst);
+}
+
+.knop:active { transform: scale(0.97); }
+
+.terug {
+  display: inline-block;
+  margin-bottom: 22px;
+  color: var(--gedempt);
+  font-family: system-ui, sans-serif;
+  font-size: 0.95rem;
+  padding: 10px 0;
+}
+
+@media (max-width: 500px) {
+  body { font-size: 19px; }
+  .artikel h1 { font-size: 1.7rem; }
+  .knop { padding: 0 20px; font-size: 1.05rem; }
+}

@@ -1,0 +1,124 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { rubrieken, datumNL } from '../../rubrieken.js';
+
+export async function getStaticPaths() {
+  const items = await getCollection('nieuws');
+  return items.map((item) => ({
+    params: { slug: item.id },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+const d = item.data;
+---
+
+<Base titel={`${d.titel} — Stoomtrein Vandaag`}>
+  <a class="terug" href="/">&larr; Terug naar het overzicht</a>
+
+  <article class="artikel">
+    <img class="artikelfoto" src={d.afbeelding} alt="" />
+    <p class="credit">{d.afbeeldingCredit}</p>
+
+    <span class="merk" data-r={d.rubriek}>{rubrieken[d.rubriek].naam}</span>
+    <h1>{d.titel}</h1>
+
+    {d.audio && (
+      <audio id="speler" controls preload="none" src={d.audio}></audio>
+    )}
+
+    <div id="tekst">
+      <Content />
+    </div>
+
+    <p class="bronregel">
+      {d.bron && (
+        <>
+          Bron:{' '}
+          {d.bron.url
+            ? <a class="bronlink" href={d.bron.url} rel="noopener nofollow" target="_blank">{d.bron.naam}</a>
+            : d.bron.naam}
+          {d.bron.datum ? `, ${d.bron.datum}` : ''}
+          <br />
+        </>
+      )}
+      {d.afbeeldingCredit}
+      <br />
+      Geplaatst op {datumNL(d.datum)}
+    </p>
+  </article>
+
+  <div class="balk">
+    <button class="knop stil" id="stop">Stop</button>
+    <button class="knop" id="lees">Lees voor</button>
+  </div>
+</Base>
+
+<script>
+  const leesKnop = document.getElementById('lees');
+  const stopKnop = document.getElementById('stop');
+  const tekstBlok = document.getElementById('tekst');
+  const titelBlok = document.querySelector('.artikel h1');
+
+  let bezig = false;
+
+  function stemKiezen() {
+    const stemmen = window.speechSynthesis.getVoices();
+    return (
+      stemmen.find((s) => s.lang === 'nl-NL') ||
+      stemmen.find((s) => s.lang && s.lang.startsWith('nl')) ||
+      null
+    );
+  }
+
+  function voorlezen() {
+    if (!('speechSynthesis' in window)) {
+      alert('Voorlezen werkt niet op dit apparaat.');
+      return;
+    }
+    window.speechSynthesis.cancel();
+
+    const stukken = [];
+    if (titelBlok) stukken.push(titelBlok.innerText);
+    tekstBlok.querySelectorAll('p, li').forEach((el) => {
+      const t = el.innerText.trim();
+      if (t) stukken.push(t);
+    });
+
+    const stem = stemKiezen();
+
+    stukken.forEach((stuk, i) => {
+      const u = new SpeechSynthesisUtterance(stuk);
+      u.lang = 'nl-NL';
+      if (stem) u.voice = stem;
+      u.rate = 0.95;
+      if (i === stukken.length - 1) {
+        u.onend = () => {
+          bezig = false;
+          leesKnop.textContent = 'Lees voor';
+        };
+      }
+      window.speechSynthesis.speak(u);
+    });
+
+    bezig = true;
+    leesKnop.textContent = 'Opnieuw';
+  }
+
+  function stoppen() {
+    window.speechSynthesis.cancel();
+    bezig = false;
+    leesKnop.textContent = 'Lees voor';
+  }
+
+  leesKnop.addEventListener('click', voorlezen);
+  stopKnop.addEventListener('click', stoppen);
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+  }
+</script>
