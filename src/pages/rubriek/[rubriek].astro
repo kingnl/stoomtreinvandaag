@@ -1,15 +1,15 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Voorlezen from '../../components/Voorlezen.astro';
 import { rubrieken, datumNL } from '../../rubrieken.js';
 
 export async function getStaticPaths() {
   const alles = await getCollection('nieuws');
-  const namen = [...new Set(alles.map((a) => a.data.rubriek))];
-  return namen.map((r) => ({
+  return Object.keys(rubrieken).map((r) => ({
     params: { rubriek: r },
     props: {
-      naam: r,
+      sleutel: r,
       items: alles
         .filter((a) => a.data.rubriek === r)
         .sort((a, b) => b.data.datum.valueOf() - a.data.datum.valueOf()),
@@ -17,23 +17,51 @@ export async function getStaticPaths() {
   }));
 }
 
-const { naam, items } = Astro.props;
+const { sleutel, items } = Astro.props;
+const r = rubrieken[sleutel];
 ---
 
-<Base titel={`${rubrieken[naam].naam} — Stoomtrein Vandaag`}>
+<Base titel={`${r.naam} — Stoomtrein Vandaag`}>
   <a class="terug" href="/">&larr; Terug naar het overzicht</a>
 
-  <h2 class="sectiekop">{rubrieken[naam].naam}</h2>
+  <img class="artikelfoto" src={r.foto} alt="" />
+  <p class="credit">{r.fotoCredit}</p>
 
-  <div class="raster">
-    {items.map((a) => (
-      <a class="kaart" href={`/nieuws/${a.id}/`}>
-        <img src={a.data.afbeelding} alt="" />
-        <div class="inhoud">
-          <h3>{a.data.titel}</h3>
-          <span class="datum">{datumNL(a.data.datum)}</span>
-        </div>
-      </a>
-    ))}
+  <h1 class="rubriektitel">{r.naam}</h1>
+
+  <div class="intro" id="voorlezen">
+    {r.intro.map((p) => <p>{p}</p>)}
   </div>
+
+  {r.feiten.length > 0 && (
+    <dl class="feiten">
+      {r.feiten.map(([k, v]) => (
+        <>
+          <dt>{k}</dt>
+          <dd>{v}</dd>
+        </>
+      ))}
+    </dl>
+  )}
+
+  {items.length > 0 ? (
+    <>
+      <h2 class="sectiekop">Verhalen over {r.naam}</h2>
+      <div class="raster">
+        {items.map((a) => (
+          <a class="kaart" href={`/nieuws/${a.id}/`}>
+            <img src={a.data.afbeelding} alt="" />
+            <div class="inhoud">
+              <h3>{a.data.titel}</h3>
+              <span class="datum">{datumNL(a.data.datum)}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </>
+  ) : (
+    <p class="leeg">Hier komen binnenkort verhalen te staan.</p>
+  )}
+
+  <Voorlezen />
 </Base>

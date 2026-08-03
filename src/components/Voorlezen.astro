@@ -1,0 +1,62 @@
+---
+const { doel = '#voorlezen' } = Astro.props;
+---
+
+<div class="balk" data-doel={doel}>
+  <button class="knop stil" data-stop>Stop</button>
+  <button class="knop" data-lees>Lees voor</button>
+</div>
+
+<script>
+  document.querySelectorAll('.balk').forEach((balk) => {
+    const leesKnop = balk.querySelector('[data-lees]');
+    const stopKnop = balk.querySelector('[data-stop]');
+    const doel = document.querySelector(balk.dataset.doel);
+    if (!doel) return;
+
+    function stem() {
+      const alle = window.speechSynthesis.getVoices();
+      return alle.find((s) => s.lang === 'nl-NL') ||
+             alle.find((s) => s.lang && s.lang.startsWith('nl')) || null;
+    }
+
+    function voorlezen() {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+
+      const stukken = [];
+      const kop = document.querySelector('h1');
+      if (kop) stukken.push(kop.innerText);
+      doel.querySelectorAll('p, li').forEach((el) => {
+        const t = el.innerText.trim();
+        if (t) stukken.push(t);
+      });
+
+      const v = stem();
+      stukken.forEach((stuk, i) => {
+        const u = new SpeechSynthesisUtterance(stuk);
+        u.lang = 'nl-NL';
+        if (v) u.voice = v;
+        u.rate = 0.95;
+        if (i === stukken.length - 1) {
+          u.onend = () => { leesKnop.textContent = 'Lees voor'; };
+        }
+        window.speechSynthesis.speak(u);
+      });
+      leesKnop.textContent = 'Opnieuw';
+    }
+
+    function stoppen() {
+      window.speechSynthesis.cancel();
+      leesKnop.textContent = 'Lees voor';
+    }
+
+    leesKnop.addEventListener('click', voorlezen);
+    stopKnop.addEventListener('click', stoppen);
+  });
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+  }
+</script>

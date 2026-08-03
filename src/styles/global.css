@@ -50,16 +50,41 @@ img { max-width: 100%; display: block; }
 
 .sitekop a { display: inline-block; }
 
-.sitekop h1 {
-  margin: 0;
-  font-size: 2rem;
-  letter-spacing: 0.5px;
+.logo {
+  width: 260px;
+  max-width: 70vw;
+  margin: 0 auto;
 }
 
-.sitekop p {
-  margin: 6px 0 0;
+.rubriektitel {
+  font-size: 2.1rem;
+  line-height: 1.2;
+  margin: 0 0 20px;
+}
+
+.intro p {
+  margin: 0 0 18px;
+}
+
+.feiten {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 10px 20px;
+  margin: 0 0 40px;
+  padding: 20px 22px;
+  background: var(--kaart);
+  border: 1px solid var(--rand);
+  border-radius: var(--radius);
+  font-family: system-ui, sans-serif;
+  font-size: 0.95rem;
+}
+
+.feiten dt { color: var(--gedempt); margin: 0; }
+.feiten dd { margin: 0; }
+
+.leeg {
   color: var(--gedempt);
-  font-size: 1rem;
+  font-style: italic;
 }
 
 /* ---------- Rubrieken ---------- */
