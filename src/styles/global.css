@@ -479,3 +479,139 @@ img { max-width: 100%; display: block; }
 @media (max-width: 500px) {
   .modelknoppen button { width: 50px; height: 50px; font-size: 1.3rem; }
 }
+
+/* ---------- Blokken op de rubriekpagina ---------- */
+
+.blok { margin: 0 0 44px; }
+
+/* ---------- Galerij ---------- */
+
+.galerij {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--kaart);
+  border: 1px solid var(--rand);
+}
+
+.strip {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.strip::-webkit-scrollbar { display: none; }
+
+.dia {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  margin: 0;
+}
+
+.dia img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+  cursor: zoom-in;
+}
+
+.dia img.groot {
+  transform: scale(2);
+  cursor: zoom-out;
+}
+
+.dia figcaption {
+  padding: 16px 20px 46px;
+  font-size: 1rem;
+  line-height: 1.45;
+  color: var(--tekst);
+}
+
+.galknop {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px;
+  height: 56px;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--tekst);
+  background: rgba(20, 17, 15, 0.78);
+  border: 2px solid var(--rand);
+  border-radius: 50%;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: opacity 0.2s;
+}
+
+.galknop.links { left: 10px; }
+.galknop.rechts { right: 10px; }
+.galknop.uit { opacity: 0.25; }
+.galknop:active { transform: translateY(-50%) scale(0.94); }
+
+.stippen {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.stippen span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--rand);
+}
+
+.stippen span.aan { background: var(--accent); }
+
+/* ---------- Om te doen ---------- */
+
+.doenraster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.doenkaart {
+  display: block;
+  background: var(--kaart);
+  border: 1px solid var(--rand);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.doenkaart img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.doenkaart .inhoud { padding: 18px 20px 22px; }
+
+.doenkaart h3 { margin: 0 0 8px; font-size: 1.25rem; }
+.doenkaart p { margin: 0; color: var(--gedempt); font-size: 1rem; }
+
+.doenkaart.straks { opacity: 0.6; }
+
+.binnenkort {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 4px 12px;
+  border: 1px solid var(--rand);
+  border-radius: 999px;
+  font-family: system-ui, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gedempt);
+}

@@ -4,7 +4,7 @@ datum: 2026-07-28
 rubriek: zlsm
 samenvatting: "Zweden hield decennialang stoomlocomotieven achter de hand voor noodgevallen. Vier ervan staan nu in Simpelveld."
 afbeelding: "/images/zlsm-1040.jpg"
-afbeeldingCredit: "Foto: bron nog aanvullen"
+afbeeldingCredit: "Foto: Joris, via Wikimedia Commons, CC BY-SA 4.0"
 video: "FJiGIB3INJw"
 videoCredit: "Video: kanaal nog aanvullen, via YouTube"
 bron:

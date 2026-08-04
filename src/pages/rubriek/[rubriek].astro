@@ -2,6 +2,8 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Voorlezen from '../../components/Voorlezen.astro';
+import Galerij from '../../components/Galerij.astro';
+import Model from '../../components/Model.astro';
 import { rubrieken, datumNL } from '../../rubrieken.js';
 
 export async function getStaticPaths() {
@@ -19,10 +21,11 @@ export async function getStaticPaths() {
 
 const { sleutel, items } = Astro.props;
 const r = rubrieken[sleutel];
+const galerij = r.galerij ?? [];
+const uitgelicht = r.uitgelicht ?? [];
 ---
 
-<Base titel={`${r.naam} — Stoomtrein Vandaag`}>
-  <a class="terug" href="/">&larr; Terug naar het overzicht</a>
+<Base titel={`${r.naam} — Stoomtrein Vandaag`} compact={true}>
 
   <img class="artikelfoto" src={r.foto} alt="" />
   <p class="credit">{r.fotoCredit}</p>
@@ -35,18 +38,56 @@ const r = rubrieken[sleutel];
 
   {r.feiten.length > 0 && (
     <dl class="feiten">
-      {r.feiten.map(([k, v]) => (
-        <>
-          <dt>{k}</dt>
-          <dd>{v}</dd>
-        </>
-      ))}
+      {r.feiten.map(([k, v]) => (<><dt>{k}</dt><dd>{v}</dd></>))}
     </dl>
   )}
 
+  {r.model && (
+    <section class="blok">
+      <h2 class="sectiekop">Draai hem rond</h2>
+      <Model bestand={r.model} titel={r.naam} />
+      <p class="credit">{r.modelCredit}</p>
+    </section>
+  )}
+
+  {galerij.length > 0 && (
+    <section class="blok">
+      <h2 class="sectiekop">Foto's</h2>
+      <Galerij fotos={galerij} />
+    </section>
+  )}
+
+  {uitgelicht.length > 0 && (
+    <section class="blok">
+      <h2 class="sectiekop">Om te doen</h2>
+      <div class="doenraster">
+        {uitgelicht.map((u) => (
+          u.link ? (
+            <a class="doenkaart" href={u.link}>
+              {u.foto && <img src={u.foto} alt="" />}
+              <div class="inhoud">
+                <h3>{u.titel}</h3>
+                <p>{u.tekst}</p>
+              </div>
+            </a>
+          ) : (
+            <div class="doenkaart straks">
+              {u.foto && <img src={u.foto} alt="" />}
+              <div class="inhoud">
+                <h3>{u.titel}</h3>
+                <p>{u.tekst}</p>
+                <span class="binnenkort">Binnenkort</span>
+              </div>
+            </div>
+          )
+        ))}
+      </div>
+    </section>
+  )}
+
   {items.length > 0 ? (
-    <>
-      <h2 class="sectiekop">Verhalen over {r.naam}</h2>
+    <section class="blok">
+      <h2 class="sectiekop">Verhalen</h2>
       <div class="raster">
         {items.map((a) => (
           <a class="kaart" href={`/nieuws/${a.id}/`}>
@@ -58,10 +99,19 @@ const r = rubrieken[sleutel];
           </a>
         ))}
       </div>
-    </>
+    </section>
   ) : (
     <p class="leeg">Hier komen binnenkort verhalen te staan.</p>
   )}
 
-  <Voorlezen />
+  <nav class="balk">
+    <a class="knop stil klein" href="/">&larr; Terug</a>
+    <div class="rechts">
+      <button class="knop stil klein verborgen" id="stop">Stop</button>
+      <button class="knop klein" id="lees">Lees voor</button>
+    </div>
+  </nav>
+
 </Base>
+
+<Voorlezen />

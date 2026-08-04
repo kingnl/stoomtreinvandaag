@@ -1,0 +1,69 @@
+---
+const { fotos } = Astro.props;
+---
+
+<div class="galerij">
+  <div class="strip">
+    {fotos.map((f, i) => (
+      <figure class="dia" data-i={i}>
+        <img src={f.foto} alt={f.bijschrift ?? ''} loading="lazy" />
+        {f.bijschrift && <figcaption>{f.bijschrift}</figcaption>}
+      </figure>
+    ))}
+  </div>
+
+  <button class="galknop links" data-vorige aria-label="Vorige foto">&#8249;</button>
+  <button class="galknop rechts" data-volgende aria-label="Volgende foto">&#8250;</button>
+
+  <div class="stippen">
+    {fotos.map((_, i) => <span data-stip={i} class={i === 0 ? 'aan' : ''}></span>)}
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.galerij').forEach((gal) => {
+    const strip = gal.querySelector('.strip');
+    const dias = [...gal.querySelectorAll('.dia')];
+    const stippen = [...gal.querySelectorAll('[data-stip]')];
+    let huidig = 0;
+
+    function ganaar(i) {
+      huidig = Math.max(0, Math.min(i, dias.length - 1));
+      dias[huidig].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    }
+
+    gal.querySelector('[data-vorige]').addEventListener('click', () => ganaar(huidig - 1));
+    gal.querySelector('[data-volgende]').addEventListener('click', () => ganaar(huidig + 1));
+
+    // welke foto staat in beeld
+    const kijker = new IntersectionObserver((items) => {
+      items.forEach((it) => {
+        if (it.isIntersecting) {
+          huidig = Number(it.target.dataset.i);
+          stippen.forEach((s, i) => s.classList.toggle('aan', i === huidig));
+          gal.querySelector('[data-vorige]').classList.toggle('uit', huidig === 0);
+          gal.querySelector('[data-volgende]').classList.toggle('uit', huidig === dias.length - 1);
+        }
+      });
+    }, { root: strip, threshold: 0.6 });
+
+    dias.forEach((d) => kijker.observe(d));
+
+    // tikken op een foto zoomt in en weer uit
+    dias.forEach((dia) => {
+      const img = dia.querySelector('img');
+      img.addEventListener('click', (e) => {
+        if (img.classList.contains('groot')) {
+          img.classList.remove('groot');
+          img.style.transformOrigin = '';
+        } else {
+          const r = img.getBoundingClientRect();
+          const x = ((e.clientX - r.left) / r.width) * 100;
+          const y = ((e.clientY - r.top) / r.height) * 100;
+          img.style.transformOrigin = `${x}% ${y}%`;
+          img.classList.add('groot');
+        }
+      });
+    });
+  });
+</script>

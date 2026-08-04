@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Model from '../../components/Model.astro';
+import Voorlezen from '../../components/Voorlezen.astro';
 import { rubrieken, datumNL } from '../../rubrieken.js';
 
 export async function getStaticPaths() {
@@ -101,79 +102,4 @@ const embed = d.video
 
 </Base>
 
-<script>
-  const leesKnop = document.getElementById('lees');
-  const stopKnop = document.getElementById('stop');
-  const blok = document.getElementById('voorlezen');
-  const kop = document.querySelector('.artikel h1');
-
-  let rij = [];
-  let index = 0;
-  let actief = false;
-
-  function stem() {
-    const alle = window.speechSynthesis.getVoices();
-    return alle.find((s) => s.lang === 'nl-NL' && /premium|enhanced|verbeterd/i.test(s.name)) ||
-           alle.find((s) => s.lang === 'nl-NL') ||
-           alle.find((s) => s.lang && s.lang.startsWith('nl')) || null;
-  }
-
-  // Tekst opdelen in losse zinnen, met een langere pauze na elke alinea
-  function bouwRij() {
-    const stukken = [];
-    if (kop) stukken.push({ tekst: kop.innerText, pauze: 700 });
-
-    blok.querySelectorAll('p, li').forEach((el) => {
-      const alinea = el.innerText.trim();
-      if (!alinea) return;
-      const zinnen = alinea.match(/[^.!?]+[.!?]*/g) || [alinea];
-      zinnen.forEach((z, i) => {
-        const t = z.trim();
-        if (t) stukken.push({ tekst: t, pauze: i === zinnen.length - 1 ? 650 : 280 });
-      });
-    });
-    return stukken;
-  }
-
-  function klaar() {
-    actief = false;
-    leesKnop.textContent = 'Lees voor';
-    stopKnop.classList.add('verborgen');
-  }
-
-  function spreekVolgende() {
-    if (!actief || index >= rij.length) { klaar(); return; }
-    const stuk = rij[index];
-    const u = new SpeechSynthesisUtterance(stuk.tekst);
-    const v = stem();
-    u.lang = 'nl-NL';
-    if (v) u.voice = v;
-    u.rate = 0.85;
-    u.pitch = 1.0;
-    u.onend = () => {
-      index++;
-      setTimeout(spreekVolgende, stuk.pauze);
-    };
-    u.onerror = () => { index++; setTimeout(spreekVolgende, 120); };
-    window.speechSynthesis.speak(u);
-  }
-
-  function voorlezen() {
-    if (!('speechSynthesis' in window)) return;
-    window.speechSynthesis.cancel();
-    rij = bouwRij();
-    index = 0;
-    actief = true;
-    leesKnop.textContent = 'Opnieuw';
-    stopKnop.classList.remove('verborgen');
-    setTimeout(spreekVolgende, 60);
-  }
-
-  leesKnop.addEventListener('click', voorlezen);
-  stopKnop.addEventListener('click', () => { actief = false; window.speechSynthesis.cancel(); klaar(); });
-
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.getVoices();
-    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
-  }
-</script>
+<Voorlezen />

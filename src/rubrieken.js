@@ -15,6 +15,12 @@ export const rubrieken = {
       ['Brandstof', 'olie'],
       ['Te zien in', 'Portland, Oregon'],
     ],
+    galerij: [
+      { foto: '/images/daglicht-4449.jpg', bijschrift: 'De 4449 in Portland, in de kleuren van de Coast Daylight.' },
+    ],
+    uitgelicht: [
+      { titel: 'Kleurplaat', tekst: 'De Daglicht om zelf in te kleuren.' },
+    ],
   },
 
   bigboy: {
@@ -32,6 +38,15 @@ export const rubrieken = {
       ['Asindeling', '4-8-8-4'],
       ['Brandstof', 'olie, sinds de restauratie'],
       ['Te zien in', 'Cheyenne, Wyoming'],
+    ],
+    model: '/models/bigboy-4014.glb',
+    modelCredit: '3D-model: Steam Locomotive Union Pacific BigBoy door Footloose, via Sketchfab, CC BY 4.0',
+    galerij: [
+      { foto: '/images/big-boy-4014.jpg', bijschrift: 'De 4014 bij Friesland in Wisconsin, met volle rook.' },
+      { foto: '/images/asindeling.jpg', bijschrift: 'Het drijfwerk van dichtbij. Links de cilinder, daarnaast de drijfstang.' },
+    ],
+    uitgelicht: [
+      { titel: 'De hele reis van 2026', tekst: 'Alle stops van kust tot kust, één voor één.' },
     ],
   },
 
@@ -51,6 +66,12 @@ export const rubrieken = {
       ['Depot', 'Beekbergen'],
       ['Bijzonder', 'vooral Duitse locomotieven'],
     ],
+    model: '/models/br52.glb',
+    modelCredit: '3D-model: BR52 Steam Locomotive Animation door Ryan.Qin, via Sketchfab, CC BY 4.0',
+    galerij: [
+      { foto: '/images/vsm-23076.jpg', bijschrift: 'Een stoomtrein van de VSM op de Veluwe.' },
+    ],
+    uitgelicht: [],
   },
 
   zlsm: {
@@ -69,6 +90,12 @@ export const rubrieken = {
       ['Depot', 'Simpelveld'],
       ['Bijzonder', 'Zweedse stoomlocomotieven'],
     ],
+    galerij: [
+      { foto: '/images/zlsm-1040.jpg', bijschrift: 'De 1040 bij de overweg in Schin op Geul.' },
+    ],
+    uitgelicht: [
+      { titel: 'De cabine', tekst: 'Zelf aan de knoppen van een stoomlocomotief.' },
+    ],
   },
 
   techniek: {
@@ -82,6 +109,12 @@ export const rubrieken = {
       'Het onderstel van het verhaal, zeg maar.',
     ],
     feiten: [],
+    model: '/models/scotsman.glb',
+    modelCredit: '3D-model: Train - Flying Scotsman Twin Tenders door timblewee, via Sketchfab, CC BY 4.0',
+    galerij: [
+      { foto: '/images/asindeling.jpg', bijschrift: 'Cilinder, drijfstang en koppelstangen van de Big Boy.' },
+    ],
+    uitgelicht: [],
   },
 };
 
