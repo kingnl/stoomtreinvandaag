@@ -418,3 +418,64 @@ img { max-width: 100%; display: block; }
 
 
 .verborgen { display: none; }
+
+
+/* ---------- 3D-model ---------- */
+
+.model {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #0c0a09;
+  margin-bottom: 18px;
+}
+
+.model model-viewer {
+  width: 100%;
+  height: 100%;
+  --poster-color: transparent;
+  background: radial-gradient(circle at 50% 40%, #241d19 0%, #0c0a09 75%);
+}
+
+.modelladen {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--gedempt);
+  font-family: system-ui, sans-serif;
+  font-size: 1rem;
+}
+
+.modelknoppen {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modelknoppen button {
+  width: 56px;
+  height: 56px;
+  font-size: 1.5rem;
+  line-height: 1;
+  font-family: system-ui, sans-serif;
+  color: var(--tekst);
+  background: rgba(20, 17, 15, 0.82);
+  border: 2px solid var(--rand);
+  border-radius: 50%;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.modelknoppen button:active { transform: scale(0.94); }
+
+@media (max-width: 500px) {
+  .modelknoppen button { width: 50px; height: 50px; font-size: 1.3rem; }
+}

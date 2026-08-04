@@ -5,6 +5,8 @@ rubriek: bigboy
 samenvatting: "Elke vijftig jaar haalt Amerika een stoomlocomotief uit 1941 van zijn sokkel. In juli kwamen de twee verhalen bij elkaar in Ohio."
 afbeelding: "/images/big-boy-4014.jpg"
 afbeeldingCredit: "Foto: bron nog aanvullen"
+model: "/models/bigboy-4014.glb"
+modelCredit: "3D-model: maker en licentie nog aanvullen, via Sketchfab"
 bron:
   naam: "13abc, Ohio"
   url: "https://www.13abc.com/2026/07/15/riding-rails-with-big-boy-across-northwest-ohio-13-action-news-exclusive/"

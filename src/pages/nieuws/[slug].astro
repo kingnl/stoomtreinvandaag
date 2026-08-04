@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Model from '../../components/Model.astro';
 import { rubrieken, datumNL } from '../../rubrieken.js';
 
 export async function getStaticPaths() {
@@ -27,7 +28,9 @@ const embed = d.video
 
 <Base titel={`${d.titel} — Stoomtrein Vandaag`} compact={true}>
 
-  {embed ? (
+  {d.model ? (
+    <Model bestand={d.model} titel={d.titel} />
+  ) : embed ? (
     <div class="media">
       <iframe src={embed} title={d.titel} allow="autoplay; encrypted-media; picture-in-picture"
         referrerpolicy="strict-origin-when-cross-origin" loading="lazy"></iframe>
@@ -77,7 +80,7 @@ const embed = d.video
           <br />
         </>
       )}
-      {d.video ? d.videoCredit : d.afbeeldingCredit}
+      {d.model ? d.modelCredit : d.video ? d.videoCredit : d.afbeeldingCredit}
       <br />
       Geplaatst op {datumNL(d.datum)}
     </p>

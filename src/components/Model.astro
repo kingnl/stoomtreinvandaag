@@ -1,0 +1,84 @@
+---
+const { bestand, titel } = Astro.props;
+---
+
+<div class="model">
+  <model-viewer
+    src={bestand}
+    alt={titel}
+    camera-controls
+    touch-action="none"
+    bounds="tight"
+    min-camera-orbit="auto auto 4%"
+    max-camera-orbit="auto auto 220%"
+    min-field-of-view="12deg"
+    max-field-of-view="45deg"
+    auto-rotate
+    auto-rotate-delay="2500"
+    rotation-per-second="14deg"
+    autoplay
+    shadow-intensity="1"
+    exposure="1.15"
+    interaction-prompt="none"
+    loading="eager"
+  ></model-viewer>
+
+  <div class="modelladen">Laden...</div>
+
+  <div class="modelknoppen">
+    <button data-in aria-label="Inzoomen">+</button>
+    <button data-uit aria-label="Uitzoomen">&minus;</button>
+    <button data-reset aria-label="Terug naar het begin">&#8634;</button>
+    <button data-pauze aria-label="Beweging pauzeren">&#9208;</button>
+  </div>
+</div>
+
+<script>
+  import 'https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js';
+
+  customElements.whenDefined('model-viewer').then(() => {
+    document.querySelectorAll('.model').forEach((doos) => {
+      const mv = doos.querySelector('model-viewer');
+      const knoppen = doos.querySelector('.modelknoppen');
+      const laden = doos.querySelector('.modelladen');
+      let beginOrbit = null;
+
+      mv.addEventListener('load', () => {
+        beginOrbit = mv.getCameraOrbit();
+        if (laden) laden.style.display = 'none';
+        if (!mv.availableAnimations || mv.availableAnimations.length === 0) {
+          knoppen.querySelector('[data-pauze]').style.display = 'none';
+        }
+      });
+
+      // Zoomen doen we met de kijkhoek. Dat werkt bij elk model even goed,
+      // ongeacht hoe groot het model in zijn eigen eenheden is.
+      function zoom(stap) {
+        const nu = parseFloat(mv.getFieldOfView());
+        const nieuw = Math.max(12, Math.min(nu + stap, 45));
+        mv.fieldOfView = nieuw + 'deg';
+        mv.autoRotate = false;
+      }
+
+      knoppen.querySelector('[data-in]').addEventListener('click', () => zoom(-6));
+      knoppen.querySelector('[data-uit]').addEventListener('click', () => zoom(6));
+
+      knoppen.querySelector('[data-reset]').addEventListener('click', () => {
+        if (beginOrbit) mv.cameraOrbit = beginOrbit.toString();
+        mv.fieldOfView = 'auto';
+        mv.autoRotate = true;
+      });
+
+      const pauzeKnop = knoppen.querySelector('[data-pauze]');
+      pauzeKnop.addEventListener('click', () => {
+        if (mv.paused) {
+          mv.play();
+          pauzeKnop.innerHTML = '&#9208;';
+        } else {
+          mv.pause();
+          pauzeKnop.innerHTML = '&#9654;';
+        }
+      });
+    });
+  });
+</script>

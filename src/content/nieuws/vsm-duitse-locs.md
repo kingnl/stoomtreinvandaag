@@ -5,6 +5,8 @@ rubriek: vsm
 samenvatting: "De Veluwsche Stoomtrein Maatschappij rijdt tussen Apeldoorn en Dieren. Het materieel komt grotendeels uit Duitsland."
 afbeelding: "/images/vsm-23076.jpg"
 afbeeldingCredit: "Foto: Sven Scholten"
+model: "/models/br52.glb"
+modelCredit: "3D-model: maker en licentie nog aanvullen, via Sketchfab"
 bron:
   naam: "Veluwsche Stoomtrein Maatschappij"
   datum: "2026"
