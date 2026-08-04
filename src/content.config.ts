@@ -15,6 +15,7 @@ const nieuws = defineCollection({
     videoCredit: z.string().optional(),
     model: z.string().optional(),          // pad naar .glb in /models/
     modelCredit: z.string().optional(),
+    modelBron: z.string().optional(),
     bron: z.object({
       naam: z.string(),
       url: z.string().optional(),

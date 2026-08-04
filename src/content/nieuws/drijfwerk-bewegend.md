@@ -4,9 +4,10 @@ datum: 2026-08-04
 rubriek: techniek
 samenvatting: "De stangen aan de zijkant van een stoomloc doen allemaal iets anders. Draai het model rond en zet het stil om te zien wat."
 afbeelding: "/images/asindeling.jpg"
-afbeeldingCredit: "Foto: drijfwerk van de Big Boy 4014"
+afbeeldingCredit: "Foto: Fan Railer, via Wikimedia Commons, CC BY-SA 4.0 (uitsnede)"
 model: "/models/scotsman.glb"
-modelCredit: "3D-model: maker en licentie nog aanvullen, via Sketchfab. Dit is een Britse locomotief, geen Nederlandse."
+modelCredit: "3D-model: Train - Flying Scotsman Twin Tenders door timblewee, via Sketchfab, CC BY 4.0. Dit is een Britse locomotief, geen Nederlandse."
+modelBron: "https://sketchfab.com/3d-models/train-flying-scotsman-twin-tenders-7c25f152f44a4e8dbff13b6376e237b0"
 bron:
   naam: "Stoomtrein Vandaag"
   datum: "2026"

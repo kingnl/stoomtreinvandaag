@@ -21,7 +21,7 @@ export const rubrieken = {
     naam: 'Big Boy 4014',
     icoon: '/images/icon-bigboy.png',
     foto: '/images/big-boy-4014.jpg',
-    fotoCredit: 'Foto: bron nog aanvullen',
+    fotoCredit: 'Foto: Mark Loewe, via Wikimedia Commons, CC BY 2.0',
     intro: [
       'De Big Boy is de grootste stoomlocomotief die ooit gebouwd is en nog rijdt. Union Pacific liet er vijfentwintig maken, voor de zware treinen over de bergen in Wyoming.',
       'De 4014 stond decennialang stil in Californie. In 2019 reed hij weer, na een restauratie van jaren.',
@@ -57,7 +57,7 @@ export const rubrieken = {
     naam: 'ZLSM',
     icoon: '/images/icon-zlsm.png',
     foto: '/images/zlsm-1040.jpg',
-    fotoCredit: 'Foto: bron nog aanvullen',
+    fotoCredit: 'Foto: Joris, via Wikimedia Commons, CC BY-SA 4.0',
     intro: [
       'De Zuid-Limburgse Stoomtrein Maatschappij rijdt vanuit Simpelveld naar Kerkrade en naar Schin op Geul. De lijn wordt ook wel de Miljoenenlijn genoemd.',
       'Vroeger reden hier treinen voor de kolenmijnen. Toen de mijnen dichtgingen, verdween ook het spoor uit dienst.',
@@ -75,7 +75,7 @@ export const rubrieken = {
     naam: 'Techniek',
     icoon: '/images/icon-techniek.png',
     foto: '/images/asindeling.jpg',
-    fotoCredit: 'Foto: drijfwerk van de Big Boy 4014',
+    fotoCredit: 'Foto: Fan Railer, via Wikimedia Commons, CC BY-SA 4.0 (uitsnede)',
     intro: [
       'Hier gaat het over hoe een stoomlocomotief in elkaar zit, en waarom hij is zoals hij is.',
       'Waarom de ene loc vier drijfwielen heeft en de andere zestien. Wat het verschil is tussen kolen en olie stoken. Hoe een scharnierend frame door een bocht komt.',

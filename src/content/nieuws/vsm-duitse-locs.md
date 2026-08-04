@@ -6,7 +6,8 @@ samenvatting: "De Veluwsche Stoomtrein Maatschappij rijdt tussen Apeldoorn en Di
 afbeelding: "/images/vsm-23076.jpg"
 afbeeldingCredit: "Foto: Sven Scholten"
 model: "/models/br52.glb"
-modelCredit: "3D-model: maker en licentie nog aanvullen, via Sketchfab"
+modelCredit: "3D-model: BR52 Steam Locomotive Animation door Ryan.Qin, via Sketchfab, CC BY 4.0"
+modelBron: "https://sketchfab.com/3d-models/br52-steam-locomotive-animation-852f498c26ee457d933f7fbeeb50c8ab"
 bron:
   naam: "Veluwsche Stoomtrein Maatschappij"
   datum: "2026"

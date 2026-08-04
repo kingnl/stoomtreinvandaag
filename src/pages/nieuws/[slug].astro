@@ -80,7 +80,12 @@ const embed = d.video
           <br />
         </>
       )}
-      {d.model ? d.modelCredit : d.video ? d.videoCredit : d.afbeeldingCredit}
+      {d.model ? (
+        <>
+          {d.modelCredit}
+          {d.modelBron && <> <a class="bronlink" href={d.modelBron} target="_blank" rel="noopener nofollow">Bekijk het model</a></>}
+        </>
+      ) : d.video ? d.videoCredit : d.afbeeldingCredit}
       <br />
       Geplaatst op {datumNL(d.datum)}
     </p>

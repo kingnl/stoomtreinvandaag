@@ -4,9 +4,10 @@ datum: 2026-08-02
 rubriek: bigboy
 samenvatting: "Elke vijftig jaar haalt Amerika een stoomlocomotief uit 1941 van zijn sokkel. In juli kwamen de twee verhalen bij elkaar in Ohio."
 afbeelding: "/images/big-boy-4014.jpg"
-afbeeldingCredit: "Foto: bron nog aanvullen"
+afbeeldingCredit: "Foto: Mark Loewe, via Wikimedia Commons, CC BY 2.0"
 model: "/models/bigboy-4014.glb"
-modelCredit: "3D-model: maker en licentie nog aanvullen, via Sketchfab"
+modelCredit: "3D-model: Steam Locomotive 'Union Pacific BigBoy' door Footloose, via Sketchfab, CC BY 4.0"
+modelBron: "https://sketchfab.com/3d-models/steam-locomotive-union-pacific-bigboy-dff7f4b67c734d4db430d8c47810a6cd"
 bron:
   naam: "13abc, Ohio"
   url: "https://www.13abc.com/2026/07/15/riding-rails-with-big-boy-across-northwest-ohio-13-action-news-exclusive/"
