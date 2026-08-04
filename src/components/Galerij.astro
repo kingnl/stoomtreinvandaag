@@ -6,7 +6,12 @@ const { fotos } = Astro.props;
   <div class="strip">
     {fotos.map((f, i) => (
       <figure class="dia" data-i={i}>
-        <img src={f.foto} alt={f.bijschrift ?? ''} loading="lazy" />
+        {f.video ? (
+          <video src={f.video} muted loop playsinline preload="metadata"
+                 poster={f.poster} data-video></video>
+        ) : (
+          <img src={f.foto} alt={f.bijschrift ?? ''} loading="lazy" />
+        )}
         {f.bijschrift && <figcaption>{f.bijschrift}</figcaption>}
       </figure>
     ))}
@@ -35,11 +40,40 @@ const { fotos } = Astro.props;
     gal.querySelector('[data-vorige]').addEventListener('click', () => ganaar(huidig - 1));
     gal.querySelector('[data-volgende]').addEventListener('click', () => ganaar(huidig + 1));
 
+    function hoogteAanpassen(i) {
+      const el = dias[i].querySelector('img, video');
+      const bij = dias[i].querySelector('figcaption');
+      if (!el) return;
+      const bw = el.naturalWidth || el.videoWidth;
+      const bh = el.naturalHeight || el.videoHeight;
+      if (!bw) return;
+      const breed = strip.clientWidth;
+      const hoog = Math.min(breed * (bh / bw), window.innerHeight * 0.62);
+      strip.style.height = hoog + (bij ? bij.offsetHeight : 0) + 'px';
+    }
+
+    window.addEventListener('resize', () => hoogteAanpassen(huidig));
+    dias.forEach((d) => {
+      const img = d.querySelector('img');
+      const vid = d.querySelector('video');
+      if (img) {
+        if (img.complete) hoogteAanpassen(0);
+        else img.addEventListener('load', () => hoogteAanpassen(huidig));
+      }
+      if (vid) vid.addEventListener('loadedmetadata', () => hoogteAanpassen(huidig));
+    });
+
     // welke foto staat in beeld
     const kijker = new IntersectionObserver((items) => {
       items.forEach((it) => {
         if (it.isIntersecting) {
           huidig = Number(it.target.dataset.i);
+          hoogteAanpassen(huidig);
+          dias.forEach((d, i) => {
+            const v = d.querySelector('[data-video]');
+            if (!v) return;
+            if (i === huidig) { v.play().catch(() => {}); } else { v.pause(); }
+          });
           stippen.forEach((s, i) => s.classList.toggle('aan', i === huidig));
           gal.querySelector('[data-vorige]').classList.toggle('uit', huidig === 0);
           gal.querySelector('[data-volgende]').classList.toggle('uit', huidig === dias.length - 1);
@@ -52,6 +86,7 @@ const { fotos } = Astro.props;
     // tikken op een foto zoomt in en weer uit
     dias.forEach((dia) => {
       const img = dia.querySelector('img');
+      if (!img) return;
       img.addEventListener('click', (e) => {
         if (img.classList.contains('groot')) {
           img.classList.remove('groot');
